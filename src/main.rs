@@ -35,7 +35,7 @@ impl Machine {
     /// Move the pointer to the left
     ///
     /// Only if the pointer is inside the tape
-    fn move_left(&mut self) { self.pointer -= 1; }
+    fn move_left(&mut self) { if self.pointer > 0 { self.pointer -= 1; } }
 
     /// Increment the current cell (selected by the pointer) by one
     fn increment(&mut self) { self.tape[self.pointer] += 1; }
@@ -59,7 +59,6 @@ struct Interpreter {
 }
 
 impl Interpreter {
-    /// Create a new Interpreter
     fn new() -> Interpreter{
         Interpreter {
             machine: Machine::new(),
