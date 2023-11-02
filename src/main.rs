@@ -38,7 +38,7 @@ impl Machine {
     fn move_left(&mut self) { if self.pointer > 0 { self.pointer -= 1; } }
 
     /// Increment the current cell (selected by the pointer) by one
-    fn increment(&mut self) { self.tape[self.pointer] += 1; }
+    fn increment(&mut self) {  self.tape[self.pointer] += 1; }
 
     /// Decrement the current cell (selected by the pointer) by one
     fn decrement(&mut self) { self.tape[self.pointer] -= 1; }
