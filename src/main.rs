@@ -35,13 +35,13 @@ impl Machine {
     /// Move the pointer to the left
     ///
     /// Only if the pointer is inside the tape
-    fn move_left(&mut self) { if self.pointer > 0 { self.pointer -= 1; } }
+    fn move_left(&mut self) { if self.pointer > usize::MIN { self.pointer -= 1; } }
 
     /// Increment the current cell (selected by the pointer) by one
-    fn increment(&mut self) {  self.tape[self.pointer] += 1; }
+    fn increment(&mut self) { if self.tape[self.pointer] < u8::MAX { self.tape[self.pointer] += 1; } }
 
     /// Decrement the current cell (selected by the pointer) by one
-    fn decrement(&mut self) { self.tape[self.pointer] -= 1; }
+    fn decrement(&mut self) { if self.tape[self.pointer] > u8::MIN { self.tape[self.pointer] -= 1; } }
 
     /// Get the unsigned integer value of the current cell
     fn get(&self) -> u8 { self.tape[self.pointer] }
@@ -70,9 +70,10 @@ impl Interpreter {
     ///
     /// Operates on Turing Machine
     fn parse(&mut self, input: String) {
+        let letters: Vec<char> = input.chars().collect();
         let mut index: usize = 0;
-        while index < input.chars().count() {
-            match input.chars().nth(index).expect("out of bounds") {
+        while index < letters.len() {
+            match letters.get(index).expect("out of bounds") {
                 '>' => self.machine.move_right(),
                 '<' => self.machine.move_left(),
                 '+' => self.machine.increment(),
