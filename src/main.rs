@@ -73,7 +73,7 @@ impl Interpreter {
         let letters: Vec<char> = input.chars().collect();
         let mut index: usize = 0;
         while index < letters.len() {
-            match letters.get(index).expect("out of bounds") {
+            match letters[index] {
                 '>' => self.machine.move_right(),
                 '<' => self.machine.move_left(),
                 '+' => self.machine.increment(),
