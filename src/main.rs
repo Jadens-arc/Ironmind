@@ -55,14 +55,14 @@ struct Interpreter {
     /// The turing machine to operate on
     machine: Machine,
     /// Used for handling loops
-    loop_start: usize,
+    loops: Vec<usize>,
 }
 
 impl Interpreter {
     fn new() -> Interpreter{
         Interpreter {
             machine: Machine::new(),
-            loop_start: 0, // cannot handle nested loops
+            loops: Vec::new(),
         }
     }
 
@@ -79,8 +79,14 @@ impl Interpreter {
                 '+' => self.machine.increment(),
                 '-' => self.machine.decrement(),
                 '.' => self.machine.output(),
-                '[' => self.loop_start = index,
-                ']' => index = if self.machine.get() != 0 { self.loop_start } else {index},
+                '[' => self.loops.push(index),
+                ']' => {
+                    if self.machine.get() != 0 {
+                        index = *self.loops.last().expect("opening bracket not found");
+                    } else {
+                        self.loops.pop();
+                    };
+                },
                 _ => (),
             }
             index += 1;
