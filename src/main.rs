@@ -47,7 +47,7 @@ impl Machine {
     fn get(&self) -> u8 { self.tape[self.pointer] }
 
     /// print the ascii value of the current cell
-    fn output(&self) { print!("{}", char::from(self.tape[self.pointer] as u8)); }
+    fn output(&self) { print!("{}", char::from(self.tape[self.pointer])); }
 }
 
 /// Parses brainfuck instructions to manipulate the turing machine
