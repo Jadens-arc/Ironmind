@@ -38,10 +38,22 @@ impl Machine {
     fn move_left(&mut self) { if self.pointer > usize::MIN { self.pointer -= 1; } }
 
     /// Increment the current cell (selected by the pointer) by one
-    fn increment(&mut self) { if self.tape[self.pointer] < u8::MAX { self.tape[self.pointer] += 1; } }
+    fn increment(&mut self) {
+        if self.tape[self.pointer] < u8::MAX {
+            self.tape[self.pointer] += 1;
+        } else {
+            self.tape[self.pointer] = 0;
+        }
+    }
 
     /// Decrement the current cell (selected by the pointer) by one
-    fn decrement(&mut self) { if self.tape[self.pointer] > u8::MIN { self.tape[self.pointer] -= 1; } }
+    fn decrement(&mut self) {
+        if self.tape[self.pointer] > u8::MIN {
+            self.tape[self.pointer] -= 1;
+        } else {
+            self.tape[self.pointer] = u8::MAX;
+        }
+    }
 
     /// Get the unsigned integer value of the current cell
     fn get(&self) -> u8 { self.tape[self.pointer] }
@@ -106,5 +118,7 @@ impl Interpreter {
 
 fn main() {
     let mut i: Interpreter = Interpreter::new();
-    i.parse_file(env::args().nth(1).expect("Please specify file to interpret"));
+    // i.parse_file(env::args().nth(1).expect("Please specify file to interpret"));
+    i.parse(String::from("-"));
+    println!("{:?}", i.machine.tape);
 }
