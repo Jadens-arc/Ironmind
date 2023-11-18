@@ -81,7 +81,7 @@ impl Interpreter {
     /// Parse a string of brainfuck instructions
     ///
     /// Operates on Turing Machine
-    fn parse(&mut self, input: String) {
+    fn parse(&mut self, input: String) -> Result<(), String> {
         let letters: Vec<char> = input.chars().collect();
         let mut index: usize = 0;
         while index < letters.len() {
@@ -94,7 +94,12 @@ impl Interpreter {
                 '[' => self.loops.push(index),
                 ']' => {
                     if self.machine.get() != 0 {
-                        index = *self.loops.last().expect("opening bracket not found");
+                        index = match self.loops.last() {
+                            Some(val) => *val,
+                            None => {
+                                return Err(String::from("Opening bracket not found"))
+                            }
+                        };
                     } else {
                         self.loops.pop();
                     };
@@ -103,22 +108,34 @@ impl Interpreter {
             }
             index += 1;
         }
+        Ok(())
     }
 
     /// Parse a BrainFuck file and interpret instructions
     ///
     /// Reads file and calls self.parse() to parse its contents
-    fn parse_file(&mut self, path: String) {
-        let mut file: File = File::open(path).expect("could not open file");
+    fn parse_file(&mut self, path: String) -> Result<(), String> {
+        let mut file: File = match File::open(path) {
+            Ok(file) => file,
+            Err(_) => {
+                return Err(String::from("Could not open file"));
+            }
+        };
         let mut contents: String = String::new();
-        file.read_to_string(&mut contents).expect("could not read file");
-        self.parse(contents);
+        match file.read_to_string(&mut contents) {
+            Ok(_) => (),
+            Err(_) => return Err(String::from("Could not read file"))
+        }
+        self.parse(contents)
     }
 }
 
-fn main() {
+fn main() -> Result<(), String> {
     let mut i: Interpreter = Interpreter::new();
-    // i.parse_file(env::args().nth(1).expect("Please specify file to interpret"));
-    i.parse(String::from("-"));
-    println!("{:?}", i.machine.tape);
+    i.parse_file(
+        match env::args().nth(1) {
+            Some(path) => path,
+            None => return Err(String::from("Please specify file path")),
+        }
+    )
 }
