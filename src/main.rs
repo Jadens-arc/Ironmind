@@ -117,9 +117,7 @@ impl Interpreter {
     fn parse_file(&mut self, path: String) -> Result<(), String> {
         let mut file: File = match File::open(path) {
             Ok(file) => file,
-            Err(_) => {
-                return Err(String::from("Could not open file"));
-            }
+            Err(_) => return Err(String::from("Could not open file"))
         };
         let mut contents: String = String::new();
         match file.read_to_string(&mut contents) {
