@@ -57,7 +57,7 @@ Feel free to move it to a ```Bin/``` directory if you want
 If you do move it, you can use   ```ironmind myfile.bf``` anywhere on your system
 
 
-Also, I found [this really cool](http://www.99-bottles-of-beer.net/language-brainfuck-101.html) BrainF*ck program that outputs 99 Bottles of Beer by Andrew Paczkowski
+Also, I found [this really cool](http://www.99-bottles-of-beer.net/language-brainfuck-101.html) BrainF*ck program from 2005 that outputs 99 Bottles of Beer by Andrew Paczkowski
 
 Definitely worth checking out
 
