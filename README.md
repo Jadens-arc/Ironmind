@@ -25,7 +25,7 @@ Hello, World!
 ```
 
 ## Build Instructions
-### Build Dependencies
+### Prerequisite Dependencies
 - Rust
 - Cargo
 
