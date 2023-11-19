@@ -6,6 +6,7 @@ A BrainF*ck interpreter written in Rust
 ## Example
 Sample program:
 ```brainfuck
+myfile.bf
 ++++++++++++[>++++++<-]>.           H
 >++++++++++[>++++++++++<-]>+.       e
 >+++++++++[>++++++++++++<-]>..      l (printed twice)
@@ -19,6 +20,10 @@ Sample program:
 >++++++++++[>++++++++++<-]>.        d
 >++++[>++++++++<-]>+.               (exclamation)
 >+++[>+++<-]>+.                     (new line)
+```
+Run Using:
+```shell
+ironmind myfile.bf
 ```
 Output:
 ```
