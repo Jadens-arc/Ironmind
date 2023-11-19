@@ -71,7 +71,7 @@ struct Interpreter {
 }
 
 impl Interpreter {
-    fn new() -> Interpreter{
+    fn new() -> Interpreter {
         Interpreter {
             machine: Machine::new(),
             loops: Vec::new(),
