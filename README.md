@@ -1,6 +1,7 @@
 # The Iron Mind Interpreter
 A BrainF*ck interpreter written in Rust
 
+[What is BrainF*ck](https://www.youtube.com/watch?v=hdHjjBS4cs8)
 
 ## Example
 Sample program:
