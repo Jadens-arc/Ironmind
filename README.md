@@ -42,7 +42,7 @@ git clone https://github.com/Jadens-arc/Iron-Mind
 cd Iron-Mind
 cargo build --release
 ```
-The executable will be found at ``` target/release/ironmind```
+The executable will be found at ```target/release/ironmind```
 
 Run using ```./ironmind```
 
