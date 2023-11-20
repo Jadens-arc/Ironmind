@@ -94,11 +94,8 @@ impl Interpreter {
                 '[' => self.loops.push(index),
                 ']' => {
                     if self.machine.get() != 0 {
-                        index = match self.loops.last() {
-                            Some(val) => *val,
-                            None => {
-                                return Err(String::from("Opening bracket not found"))
-                            }
+                        index = if let Some(val) = self.loops.last() { *val } else {
+                            return Err(String::from("Opening bracket not found"))
                         };
                     } else {
                         self.loops.pop();
@@ -115,14 +112,12 @@ impl Interpreter {
     ///
     /// Reads file and calls self.parse() to parse its contents
     fn parse_file(&mut self, path: String) -> Result<(), String> {
-        let mut file: File = match File::open(path) {
-            Ok(file) => file,
-            Err(_) => return Err(String::from("Could not open file"))
+        let mut file: File = if let Ok(file) = File::open(path) { file } else {
+            return Err(String::from("Could not open file"))
         };
         let mut contents: String = String::new();
-        match file.read_to_string(&mut contents) {
-            Ok(_) => (),
-            Err(_) => return Err(String::from("Could not read file"))
+        if let Err(_) = file.read_to_string(&mut contents) {
+            return Err(String::from("Could not read file"))
         }
         self.parse(contents)
     }
