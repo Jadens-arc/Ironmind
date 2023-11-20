@@ -11,6 +11,7 @@ const TAPE_LENGTH: usize = 30000;
 ///
 /// Cells in the tap can be modified by a pointer, either by incrementing it or decrementing the cell by 1
 /// The pointer can be moved left or right along the tape
+#[derive(Debug, Clone)]
 struct Machine {
     /// The modifiable array of data
     tape: [u8; TAPE_LENGTH],
@@ -63,6 +64,7 @@ impl Machine {
 }
 
 /// Parses brainfuck instructions to manipulate the turing machine
+#[derive(Debug, Clone)]
 struct Interpreter {
     /// The turing machine to operate on
     machine: Machine,
