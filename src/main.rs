@@ -1,6 +1,6 @@
-use std::env;
+use std::{env, io};
 use std::fs::File;
-use std::io::Read;
+use std::io::{Read, Write};
 
 /// Defines the tape length for the turing machine
 const TAPE_LENGTH: usize = 30000;
@@ -31,7 +31,7 @@ impl Machine {
     /// Move the pointer right
     ///
     /// Only if the pointer is inside the tape
-    fn move_right(&mut self) { if self.pointer < TAPE_LENGTH { self.pointer += 1; } }
+    fn move_right(&mut self) { if self.pointer < TAPE_LENGTH - 1 { self.pointer += 1; } }
 
     /// Move the pointer to the left
     ///
@@ -59,8 +59,13 @@ impl Machine {
     /// Get the unsigned integer value of the current cell
     fn get(&self) -> u8 { self.tape[self.pointer] }
 
-    /// print the ascii value of the current cell
+    /// Print the ascii value of the current cell
     fn output(&self) { print!("{}", char::from(self.tape[self.pointer])); }
+
+    /// Set the value of the current cell
+    fn set(&mut self, value: u8) {
+        self.tape[self.pointer] = value;
+    }
 }
 
 /// Parses brainfuck instructions to manipulate the turing machine
@@ -80,6 +85,18 @@ impl Interpreter {
         }
     }
 
+    /// Prompt user to input a char and set the value of the current to the ascii code representation of the char
+    fn get_input(&mut self) -> Result<(), std::io::Error>{
+        print!("> ");
+        io::stdout().flush()?;
+        let mut input: String = String::new();
+        io::stdin().read_line(&mut input)?;
+        if let Some(value) = input.chars().collect::<Vec<char>>().first() {
+            self.machine.set(*value as u8);
+        }
+        Ok(())
+    }
+
     /// Parse a string of brainfuck instructions
     ///
     /// Operates on Turing Machine
@@ -93,6 +110,11 @@ impl Interpreter {
                 '+' => self.machine.increment(),
                 '-' => self.machine.decrement(),
                 '.' => self.machine.output(),
+                ',' => {
+                    if let Err(_) = self.get_input() {
+                        return Err(String::from("Input could not be parsed"));
+                    }
+                },
                 '[' => self.loops.push(index),
                 ']' => {
                     if self.machine.get() != 0 {
