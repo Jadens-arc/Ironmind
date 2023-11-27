@@ -5,6 +5,10 @@ A BrainF*ck interpreter written in Rust
 
 [What is BrainF*ck](https://www.youtube.com/watch?v=hdHjjBS4cs8)
 
+## Installation Instructions
+### Cargo
+Run `cargo install ironmind` to install the application from [crates.io](https://crates.io/).
+
 ## Example
 Sample program:
 ```brainfuck
