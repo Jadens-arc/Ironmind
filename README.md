@@ -1,6 +1,8 @@
 # The Iron Mind Interpreter
 A BrainF*ck interpreter written in Rust
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [What is BrainF*ck](https://www.youtube.com/watch?v=hdHjjBS4cs8)
 
 ## Example
