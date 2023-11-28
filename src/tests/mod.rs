@@ -1,6 +1,6 @@
+#[cfg(test)]
 pub mod tests {
     use crate::Interpreter;
-
     #[test]
     pub fn hello_world() {
         let mut i: Interpreter = Interpreter::new();
