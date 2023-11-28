@@ -1,8 +1,8 @@
-mod tests {
+pub mod tests {
     use crate::Interpreter;
 
     #[test]
-    fn hello_world() {
+    pub fn hello_world() {
         let mut i: Interpreter = Interpreter::new();
         i.parse(String::from("
         ++++++++++++[>++++++<-]>.           H

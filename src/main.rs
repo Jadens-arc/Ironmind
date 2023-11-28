@@ -1,5 +1,4 @@
 mod tests;
-
 use std::{env, io};
 use std::fs::File;
 use std::io::{Read, Write};
