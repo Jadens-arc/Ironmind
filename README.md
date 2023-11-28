@@ -1,7 +1,11 @@
 # The Iron Mind Interpreter
 A BrainF*ck interpreter written in Rust
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Crates.io](https://img.shields.io/crates/l/ironmind)](https://opensource.org/licenses/MIT)
+[![Crates.io](https://img.shields.io/crates/d/ironmind)](https://crates.io/crates/ironmind)
+[![Crates.io](https://img.shields.io/github/actions/workflow/status/jadens-arc/Iron-Mind/rust.yml)](https://github.com/Jadens-Arc/Iron-Mind)
+
+
 
 [What is BrainF*ck](https://www.youtube.com/watch?v=hdHjjBS4cs8)
 
@@ -47,6 +51,11 @@ git clone https://github.com/Jadens-arc/Iron-Mind
 cd Iron-Mind
 cargo run myfile.bf
 ```
+To run automated tests run
+```shell
+cargo test
+```
+Tests are found in ```src/tests```
 
 ### Compiling Executable
 ```shell
