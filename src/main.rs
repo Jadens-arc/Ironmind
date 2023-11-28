@@ -6,8 +6,8 @@ use parser::Parser;
 use std::{env};
 
 fn main() -> Result<(), String> {
-    let mut i: Parser = Parser::new();
-    i.parse_file(
+    let mut p: Parser = Parser::new();
+    p.parse_file(
         match env::args().nth(1) {
             Some(path) => path,
             None => return Err(String::from("Please specify file path")),
