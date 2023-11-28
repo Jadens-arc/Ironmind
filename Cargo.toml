@@ -1,11 +1,10 @@
 [package]
 name = "ironmind"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 authors = ["Jaden Arceneaux <contact@jadenarceneaux.com>"]
 description = "A Brainf*ck interpreter built in Rust"
 license = "MIT"
-license-file = "LICENSE"
 readme = "README.md"
 repository = "https://github.com/Jadens-arc/Iron-Mind"
 keywords = ["BrainFuck"]
