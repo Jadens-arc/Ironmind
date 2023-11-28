@@ -1,3 +1,5 @@
+mod tests;
+
 use std::{env, io};
 use std::fs::File;
 use std::io::{Read, Write};
@@ -155,24 +157,4 @@ fn main() -> Result<(), String> {
             None => return Err(String::from("Please specify file path")),
         }
     )
-}
-
-#[test]
-fn hello_world() {
-    let mut i: Interpreter = Interpreter::new();
-    i.parse(String::from("
-        ++++++++++++[>++++++<-]>.           H
-        >++++++++++[>++++++++++<-]>+.       e
-        >+++++++++[>++++++++++++<-]>..      l (printed twice)
-        >++++++++++[>+++++++++++<-]>+.      o
-        >++++[>+++++++++++<-]>.             (comma)
-        >++++[>++++++++<-]>.                (space)
-        >++++++++[>+++++++++++<-]>-.        W
-        >++++++++++[>+++++++++++<-]>+.      o
-        >++++++++++[>+++++++++++<-]>++++.   r
-        >+++++++++[>++++++++++++<-]>.       l
-        >++++++++++[>++++++++++<-]>.        d
-        >++++[>++++++++<-]>+.               (exclamation)
-        >+++[>+++<-]>+.                     (new line)
-    ")).expect("Hello world test failed");
 }
