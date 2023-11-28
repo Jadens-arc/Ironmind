@@ -3,8 +3,8 @@ pub mod tests {
     use crate::Parser;
     #[test]
     pub fn hello_world() {
-        let mut i: Parser = Parser::new();
-        i.parse(String::from("
+        let mut p: Parser = Parser::new();
+        p.parse(String::from("
         ++++++++++++[>++++++<-]>.           H
         >++++++++++[>++++++++++<-]>+.       e
         >+++++++++[>++++++++++++<-]>..      l (printed twice)
