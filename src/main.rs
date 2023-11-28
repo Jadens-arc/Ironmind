@@ -1,12 +1,12 @@
 mod tests;
 mod turing_machine;
-mod interpreter;
+mod parser;
 use turing_machine::Machine;
-use interpreter::Interpreter;
+use parser::Parser;
 use std::{env};
 
 fn main() -> Result<(), String> {
-    let mut i: Interpreter = Interpreter::new();
+    let mut i: Parser = Parser::new();
     i.parse_file(
         match env::args().nth(1) {
             Some(path) => path,

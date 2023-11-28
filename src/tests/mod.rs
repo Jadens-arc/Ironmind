@@ -1,9 +1,9 @@
 #[cfg(test)]
 pub mod tests {
-    use crate::Interpreter;
+    use crate::Parser;
     #[test]
     pub fn hello_world() {
-        let mut i: Interpreter = Interpreter::new();
+        let mut i: Parser = Parser::new();
         i.parse(String::from("
         ++++++++++++[>++++++<-]>.           H
         >++++++++++[>++++++++++<-]>+.       e

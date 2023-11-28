@@ -4,16 +4,16 @@ use std::io::{Read, Write};
 use std::{io};
 /// Parses brainfuck instructions to manipulate the turing machine
 #[derive(Debug, Clone)]
-pub struct Interpreter {
+pub struct Parser {
     /// The turing machine to operate on
     machine: Machine,
     /// Used for handling loops
     loops: Vec<usize>,
 }
 
-impl Interpreter {
-    pub fn new() -> Interpreter {
-        Interpreter {
+impl Parser {
+    pub fn new() -> Parser {
+        Parser {
             machine: Machine::new(),
             loops: Vec::new(),
         }
