@@ -1,6 +1,3 @@
-/// Defines the tape length for the turing machine
-pub const TAPE_LENGTH: usize = 30000;
-
 /// A turing machine
 ///
 /// Stores data in an array of size TAPE_LENGTH
@@ -10,24 +7,29 @@ pub const TAPE_LENGTH: usize = 30000;
 #[derive(Debug, Clone)]
 pub struct Machine {
     /// The modifiable array of data
-    tape: [u8; TAPE_LENGTH],
+    tape: Vec<u8>,
     /// the starting location of the pointer
-    pointer: usize
+    pointer: usize,
 }
 
 impl Machine {
     /// Create a new empty Turing Machine
     pub fn new() -> Machine {
-                        Machine {
-                        tape: [0; TAPE_LENGTH],
-                        pointer: 0,
-                        }
-                        }
+        Machine {
+            tape: Vec::from([0]),
+            pointer: 0,
+        }
+    }
 
     /// Move the pointer right
     ///
     /// Only if the pointer is inside the tape
-    pub fn move_right(&mut self) { if self.pointer < TAPE_LENGTH - 1 { self.pointer += 1; } }
+    pub fn move_right(&mut self) {
+        self.pointer += 1;
+        if self.pointer > self.tape.len() - 1 {
+            self.tape.push(0);
+        }
+    }
 
     /// Move the pointer to the left
     ///
@@ -36,12 +38,12 @@ impl Machine {
 
     /// Increment the current cell (selected by the pointer) by one
     pub fn increment(&mut self) {
-                            if self.tape[self.pointer] < u8::MAX {
-                            self.tape[self.pointer] += 1;
-                            } else {
-                            self.tape[self.pointer] = 0;
-                            }
-                            }
+        if self.tape[self.pointer] < u8::MAX {
+            self.tape[self.pointer] += 1;
+        } else {
+            self.tape[self.pointer] = 0;
+        }
+    }
 
     /// Decrement the current cell (selected by the pointer) by one
     pub fn decrement(&mut self) {
