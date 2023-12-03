@@ -38,19 +38,27 @@ impl Machine {
 
     /// Increment the current cell (selected by the pointer) by one
     pub fn increment(&mut self) {
-        if self.tape[self.pointer] < u8::MAX {
-            self.tape[self.pointer] += 1;
-        } else {
-            self.tape[self.pointer] = 0;
+        let current_value = self.tape.get_mut(self.pointer);
+
+        if let Some(cell) = current_value {
+            if *cell < u8::MAX {
+                *cell += 1;
+            } else {
+                *cell = u8::MIN;
+            }
         }
     }
 
     /// Decrement the current cell (selected by the pointer) by one
     pub fn decrement(&mut self) {
-        if self.tape[self.pointer] > u8::MIN {
-            self.tape[self.pointer] -= 1;
-        } else {
-            self.tape[self.pointer] = u8::MAX;
+        let current_value = self.tape.get_mut(self.pointer);
+
+        if let Some(cell) = current_value {
+            if *cell > u8::MIN {
+                *cell -= 1;
+            } else {
+                *cell = u8::MAX;
+            }
         }
     }
 
