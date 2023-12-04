@@ -34,16 +34,20 @@ impl Parser {
     /// Parse a string of brainfuck instructions
     ///
     /// Operates on Turing Machine
-    pub fn parse(&mut self, input: String) -> Result<(), String> {
+    pub fn parse(&mut self, input: String) -> Result<String, String> {
         let letters: Vec<char> = input.chars().collect();
         let mut index: usize = 0;
+        let mut output: String = String::new();
         while index < letters.len() {
             match letters[index] {
                 '>' => self.machine.move_right(),
                 '<' => self.machine.move_left(),
                 '+' => self.machine.increment(),
                 '-' => self.machine.decrement(),
-                '.' => self.machine.output(),
+                '.' => {
+                    output.push(self.machine.get_char());
+                    self.machine.output();
+                },
                 ',' => {
                     if let Err(_) = self.get_input() {
                         return Err(String::from("Input could not be parsed"));
@@ -53,7 +57,7 @@ impl Parser {
                 ']' => {
                     if self.machine.get() != 0 {
                         index = if let Some(val) = self.loops.last() { *val } else {
-                            return Err(String::from("Opening bracket not found"))
+                            return Err(String::from("Opening bracket not found"));
                         };
                     } else {
                         self.loops.pop();
@@ -63,13 +67,13 @@ impl Parser {
             }
             index += 1;
         }
-        Ok(())
+        Ok(output)
     }
 
     /// Parse a BrainFuck file and interpret instructions
     ///
     /// Reads file and calls self.parse() to parse its contents
-    pub fn parse_file(&mut self, path: String) -> Result<(), String> {
+    pub fn parse_file(&mut self, path: String) -> Result<String, String> {
         let mut file: File = if let Ok(file) = File::open(path) { file } else {
             return Err(String::from("Could not open file"))
         };

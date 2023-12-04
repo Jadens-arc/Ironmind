@@ -65,8 +65,11 @@ impl Machine {
     /// Get the unsigned integer value of the current cell
     pub fn get(&self) -> u8 { self.tape[self.pointer] }
 
+    /// Return the value of the current cell as a char
+    pub fn get_char(&self) -> char { self.get() as char }
+
     /// Print the ascii value of the current cell
-    pub fn output(&self) { print!("{}", char::from(self.tape[self.pointer])); }
+    pub fn output(&self) { print!("{}", self.get_char()) }
 
     /// Set the value of the current cell
     pub fn set(&mut self, value: u8) {
