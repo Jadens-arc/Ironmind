@@ -41,9 +41,12 @@ Hello, World!
 ```
 
 ## Build Instructions
-### Prerequisite Dependencies
+### System Dependencies
 - Rust
 - Cargo
+
+### Rust Dependencies (These install automatically)
+- Clap for processing command line arguments and flags
 
 ### Run for Debugging / Testing
 ```shell
