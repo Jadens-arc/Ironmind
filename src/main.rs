@@ -15,8 +15,6 @@ struct Args {
 fn main() -> Result<(), String> {
     let args = Args::parse();
     let mut p: Parser = Parser::new();
-    if let Err(e) =  p.parse_file(args.filepath) {
-        return Err(e);
-    }
+    p.parse_file(args.filepath)?;
     Ok(())
 }
