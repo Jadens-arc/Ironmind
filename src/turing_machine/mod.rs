@@ -7,9 +7,9 @@
 #[derive(Debug, Clone)]
 pub struct Machine {
     /// The modifiable array of data
-    tape: Vec<u8>,
+    pub tape: Vec<u8>,
     /// the starting location of the pointer
-    pointer: usize,
+    pub pointer: usize,
 }
 
 impl Machine {
