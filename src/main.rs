@@ -11,7 +11,9 @@ use clap::Parser as ArgumentParser;
 #[command(author, version)]
 #[command(about = "A BrainF*ck Interpreter", long_about = None)]
 struct Args {
+    /// Path to your program
     filepath: String,
+    /// Visualize the execution of your program and step through each instruction
     #[arg(short, long)]
     visual_mode: bool,
 }
