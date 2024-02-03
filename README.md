@@ -13,7 +13,7 @@ A BrainF*ck interpreter written in Rust
 ### Cargo
 Run `cargo install ironmind` to install the application from [crates.io](https://crates.io/).
 
-## Example
+## Usage
 Sample program:
 ```brainfuck
 myfile.bf
@@ -31,7 +31,9 @@ myfile.bf
 >++++[>++++++++<-]>+.               (exclamation)
 >+++[>+++<-]>+.                     (new line)
 ```
-Run Using:
+
+### Run Program
+
 ```shell
 ironmind myfile.bf
 ```
@@ -39,6 +41,14 @@ Output:
 ```
 Hello, World!
 ```
+
+### Visualize Execution
+
+```shell
+ironmind -v myfile.bf
+```
+Output:
+![visualizer](doc/visualizer.png)
 
 ## Build Instructions
 ### System Dependencies
