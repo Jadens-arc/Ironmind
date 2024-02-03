@@ -84,10 +84,6 @@ impl Parser {
         Ok(())
     }
 
-    pub fn load(&mut self, input: String) {
-        self.instructions = input;
-    }
-
     /// load a BrainFuck file into the instruction set
     pub fn load_file(&mut self, path: String) -> Result<(), String> {
         let mut file: File = if let Ok(file) = File::open(path) { file } else {
