@@ -2,20 +2,27 @@ use crate::Machine;
 use std::fs::File;
 use std::io::{Read, Write};
 use std::{io};
+
+// TODO custom error enum
+
 /// Parses brainfuck instructions to manipulate the turing machine
 #[derive(Debug, Clone)]
 pub struct Parser {
-    /// The turing machine to operate on
-    machine: Machine,
-    /// Used for handling loops
-    loops: Vec<usize>,
+    pub machine:           Machine,    // The turing machine to operate on
+    pub loops:             Vec<usize>, // Used for handling loops
+    pub instructions:      String,
+    pub instruction_index: usize,      // Current index of input being parsed
+    pub output:            String,     // Collector for bf output
 }
 
 impl Parser {
     pub fn new() -> Parser {
         Parser {
-            machine: Machine::new(),
-            loops: Vec::new(),
+            machine:            Machine::new(),
+            loops:              Vec::new(),
+            instructions:       String::new(),
+            instruction_index:  0,
+            output:             String::new(),
         }
     }
 
@@ -31,57 +38,85 @@ impl Parser {
         Ok(())
     }
 
-    /// Parse a string of brainfuck instructions
-    ///
-    /// Operates on Turing Machine
-    pub fn parse(&mut self, input: String) -> Result<String, String> {
-        let letters: Vec<char> = input.chars().collect();
-        let mut index: usize = 0;
-        let mut output: String = String::new();
-        while index < letters.len() {
-            match letters[index] {
-                '>' => self.machine.move_right(),
-                '<' => self.machine.move_left(),
-                '+' => self.machine.increment(),
-                '-' => self.machine.decrement(),
-                '.' => {
-                    output.push(self.machine.get_char());
-                    self.machine.output();
-                },
-                ',' => {
-                    if let Err(_) = self.get_input() {
-                        return Err(String::from("Input could not be parsed"));
-                    }
-                },
-                '[' => self.loops.push(index),
-                ']' => {
-                    if self.machine.get() != 0 {
-                        index = if let Some(val) = self.loops.last() { *val } else {
-                            return Err(String::from("Opening bracket not found"));
-                        };
-                    } else {
-                        self.loops.pop();
-                    };
-                },
-                _ => (),
-            }
-            index += 1;
-        }
-        Ok(output)
+    pub fn get_output(&self) -> String {
+        self.output.clone()
     }
 
-    /// Parse a BrainFuck file and interpret instructions
-    ///
-    /// Reads file and calls self.parse() to parse its contents
-    pub fn parse_file(&mut self, path: String) -> Result<String, String> {
+    pub fn get_instruction(&self, index: usize) -> char {
+        self.instructions.chars().nth(index).unwrap()
+    }
+
+    pub fn get_current_instruction(&self) -> char {
+        self.get_instruction(self.instruction_index.clone())
+    }
+
+    pub fn match_current_instruction(&mut self) -> Result<(), String> {
+        self.match_instruction(self.get_current_instruction())
+    }
+
+    pub fn match_instruction(&mut self, instruction: char) -> Result<(), String> {
+        match instruction {
+            '>' => self.machine.move_right(),
+            '<' => self.machine.move_left(),
+            '+' => self.machine.increment(),
+            '-' => self.machine.decrement(),
+            '.' => {
+                self.output.push(self.machine.get_char());
+                self.machine.output();
+            },
+            ',' => {
+                if let Err(_) = self.get_input() {
+                    return Err(String::from("Input could not be parsed"));
+                }
+            },
+            '[' => self.loops.push(self.instruction_index),
+            ']' => {
+                if self.machine.get() != 0 {
+                    self.instruction_index = if let Some(val) = self.loops.last() { val.clone() } else {
+                        return Err(String::from("Opening bracket not found"));
+                    };
+                } else {
+                    self.loops.pop();
+                };
+            },
+            _ => (),
+        }
+        Ok(())
+    }
+
+    pub fn load(&mut self, input: String) {
+        self.instructions = input;
+    }
+
+    /// load a BrainFuck file into the instruction set
+    pub fn load_file(&mut self, path: String) -> Result<(), String> {
         let mut file: File = if let Ok(file) = File::open(path) { file } else {
             return Err(String::from("Could not open file"))
         };
-        let mut contents: String = String::new();
-        if let Err(_) = file.read_to_string(&mut contents) {
+        if let Err(_) = file.read_to_string(&mut self.instructions) {
             return Err(String::from("Could not read file"))
         }
-        self.parse(contents)
+        Ok(())
+    }
+
+    /// Parse a string of brainfuck instructions
+    ///
+    /// Operates on Turing Machine
+    pub fn parse(&mut self) -> Result<String, String> {
+        while self.instruction_index < self.instructions.len() {
+            self.match_current_instruction()?;
+            self.instruction_index += 1;
+        }
+        Ok(self.output.clone())
     }
 }
 
+impl Iterator for Parser {
+    type Item = Machine;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.match_current_instruction().unwrap();
+        self.instruction_index += 1;
+        Some(self.machine.clone())
+    }
+}

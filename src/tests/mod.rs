@@ -6,7 +6,7 @@ pub mod tests {
     #[test]
     pub fn hello_world() -> Result<(), String> {
         let mut p: Parser = Parser::new();
-        match p.parse(String::from("
+        p.load(String::from("
             ++++++++++++[>++++++<-]>.           H
             >++++++++++[>++++++++++<-]>+.       e
             >+++++++++[>++++++++++++<-]>..      l (printed twice)
@@ -20,7 +20,8 @@ pub mod tests {
             >++++++++++[>++++++++++<-]>.        d
             >++++[>++++++++<-]>+.               (exclamation)
             >+++[>+++<-]>+.                     (new line)
-            ")) {
+            "));
+        match p.parse() {
             Ok(output) => {
                 if output == "Hello, World!\n" {
                     return Ok(());
@@ -34,7 +35,8 @@ pub mod tests {
     #[test]
     pub fn bottles_of_beer() -> Result<(), String> {
         let mut p: Parser = Parser::new();
-        let result = p.parse_file("src/tests/99_bottles_of_beer.bf".to_string());
+        p.load_file("src/tests/99_bottles_of_beer.bf".to_string())?;
+        let result = p.parse();
         if let Err(e) = result {
             return Err(e);
         }
