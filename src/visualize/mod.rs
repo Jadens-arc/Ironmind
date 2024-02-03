@@ -59,8 +59,7 @@ impl Visualizer {
             .child(TextView::new("Standard Output:").align(Align::center()))
             .child(TextView::new("").align(Align::center()).with_name("standard_output"))
             .child(buttons);
-        ;
         siv.add_layer(Dialog::around(LinearLayout::horizontal().child(main)));
-        siv.run();
+        siv.run()
     }
 }
