@@ -3,7 +3,7 @@ A BrainF*ck interpreter written in Rust
 
 [![Crates.io](https://img.shields.io/crates/l/ironmind)](https://opensource.org/licenses/MIT)
 [![Crates.io](https://img.shields.io/crates/d/ironmind)](https://crates.io/crates/ironmind)
-[![Crates.io](https://img.shields.io/github/actions/workflow/status/jadens-arc/Iron-Mind/rust.yml)](https://github.com/Jadens-Arc/Iron-Mind)
+[![Crates.io](https://img.shields.io/github/actions/workflow/status/jadens-arc/Ironmind/rust.yml)](https://github.com/Jadens-Arc/Ironmind)
 
 
 
@@ -60,8 +60,8 @@ Output:
 
 ### Run for Debugging / Testing
 ```shell
-git clone https://github.com/Jadens-arc/Iron-Mind
-cd Iron-Mind
+git clone https://github.com/Jadens-arc/Ironmind
+cd Ironmind
 cargo run myfile.bf
 ```
 To run automated tests run
@@ -72,8 +72,8 @@ Tests are found in ```src/tests```
 
 ### Compiling Executable
 ```shell
-git clone https://github.com/Jadens-arc/Iron-Mind
-cd Iron-Mind
+git clone https://github.com/Jadens-arc/Ironmind
+cd Ironmind
 cargo build --release
 ```
 The executable will be found at ```target/release/ironmind```
