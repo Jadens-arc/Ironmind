@@ -1,8 +1,6 @@
 use cursive::align::Align;
 use cursive::{Cursive, CursiveExt};
-use cursive::backends::curses::n::ncurses::ll::instr;
 use cursive::view::Nameable;
-use crate::Machine;
 use cursive::views::{Button, Dialog, LinearLayout, TextView};
 use crate::parser::Parser;
 pub struct Visualizer {
