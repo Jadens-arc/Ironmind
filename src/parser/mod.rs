@@ -50,11 +50,11 @@ impl Parser {
         self.get_instruction(self.instruction_index.clone())
     }
 
-    pub fn match_current_instruction(&mut self) -> Result<(), String> {
-        self.match_instruction(self.get_current_instruction())
+    pub fn match_current_instruction(&mut self, silent: bool) -> Result<(), String> {
+        self.match_instruction(self.get_current_instruction(), silent)
     }
 
-    pub fn match_instruction(&mut self, instruction: char) -> Result<(), String> {
+    pub fn match_instruction(&mut self, instruction: char, silent: bool) -> Result<(), String> {
         match instruction {
             '>' => self.machine.move_right(),
             '<' => self.machine.move_left(),
@@ -62,7 +62,9 @@ impl Parser {
             '-' => self.machine.decrement(),
             '.' => {
                 self.output.push(self.machine.get_char());
-                self.machine.output();
+                if !silent {
+                    self.machine.output();
+                }
             },
             ',' => {
                 if let Err(_) = self.get_input() {
@@ -104,7 +106,7 @@ impl Parser {
     /// Operates on Turing Machine
     pub fn parse(&mut self) -> Result<String, String> {
         while self.instruction_index < self.instructions.len() {
-            self.match_current_instruction()?;
+            self.match_current_instruction(false)?;
             self.instruction_index += 1;
         }
         Ok(self.output.clone())
@@ -115,7 +117,7 @@ impl Iterator for Parser {
     type Item = Machine;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.match_current_instruction().unwrap();
+        self.match_current_instruction(true).unwrap();
         self.instruction_index += 1;
         Some(self.machine.clone())
     }

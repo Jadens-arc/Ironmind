@@ -22,7 +22,10 @@ impl Visualizer {
                 "Step One",
                 |cursive| {
                     if let Some(data) = cursive.user_data::<Parser>() {
-                        let _ = data.match_current_instruction();
+                        if data.instruction_index + 1 == data.instructions.len() {
+                            return;
+                        }
+                        let _ = data.match_current_instruction(true);
                         data.instruction_index += 1;
                         let index = data.instruction_index.clone();
                         let output = data.get_output().clone();
