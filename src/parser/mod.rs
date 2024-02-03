@@ -86,6 +86,7 @@ impl Parser {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub fn load(&mut self, input: String) {
         self.instructions = input;
     }
