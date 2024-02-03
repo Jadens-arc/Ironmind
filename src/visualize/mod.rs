@@ -45,10 +45,6 @@ impl Visualizer {
                         });
                     }
                 }
-            ))
-            .child(Button::new(
-                "Step All",
-                |cursive| ()
             ));
 
         let main = LinearLayout::vertical()
