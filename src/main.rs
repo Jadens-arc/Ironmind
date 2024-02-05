@@ -9,7 +9,7 @@ use clap::Parser as ArgumentParser;
 
 #[derive(ArgumentParser, Debug)]
 #[command(author, version)]
-#[command(about = "A BrainF*ck Interpreter", long_about = None)]
+#[command(about = "A BrainF*ck Interpreter\nCreated by Jaden Arceneaux\ncontact@jadenarceneaux.com", long_about = None)]
 struct Args {
     /// Path to your program
     filepath: String,
