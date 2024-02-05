@@ -57,6 +57,7 @@ Output:
 
 ### Rust Dependencies (These install automatically)
 - Clap for processing command line arguments and flags
+- Cursive for TUI
 
 ### Run for Debugging / Testing
 ```shell
