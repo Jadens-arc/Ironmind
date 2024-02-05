@@ -59,6 +59,11 @@ Output:
 - Clap for processing command line arguments and flags
 - Cursive for TUI
 
+### Build Notes
+- Cursive is a wrapper around the ncurses linux library
+  - If this library isn't present on your machine then it must be installed before ironmind can be built
+  - On debian systems ncurses can be installed using ``` sudo apt install libncurses5-dev libncursesw5-dev ```
+
 ### Run for Debugging / Testing
 ```shell
 git clone https://github.com/Jadens-arc/Ironmind
