@@ -1,7 +1,7 @@
 use cursive::align::Align;
 use cursive::{Cursive, CursiveExt};
 use cursive::view::{Nameable, Resizable};
-use cursive::views::{Button, Dialog, LinearLayout, ScrollView, TextView};
+use cursive::views::{Button, Dialog, EditView, LinearLayout, ScrollView, TextView};
 use crate::parser::Parser;
 
 /// Iterate program to next instruction and update TUI
@@ -33,6 +33,35 @@ fn step(cursive: &mut Cursive) {
     }
 }
 
+fn handle_count_submit(cursive: &mut Cursive, count: &str) {
+    cursive.pop_layer();
+    if let Ok(count) = String::from(count).parse::<i32>() {
+        for _ in 0.. count {
+            step(cursive);
+        }
+        return;
+    }
+    cursive.add_layer(
+        Dialog::around(
+            LinearLayout::vertical()
+                .child(TextView::new("Error that's not a number!"))
+                .child(Button::new("Ok", |cursive: &mut Cursive| {
+                    cursive.pop_layer();
+                }))
+        )
+    );
+}
+
+fn step_x(cursive: &mut Cursive) {
+    cursive.add_layer(
+        Dialog::around(
+            LinearLayout::vertical()
+                .child(TextView::new("How many times to step forward"))
+                .child(EditView::new().on_submit(handle_count_submit))
+        )
+    )
+}
+
 /// Visualize execution of program
 pub fn visualize (parser: Parser) {
     let mut siv = Cursive::default();
@@ -45,7 +74,8 @@ pub fn visualize (parser: Parser) {
                 cursive.quit();
             }
         ))
-        .child(Button::new("Step One", step));
+        .child(Button::new("Step One", step))
+        .child(Button::new("Step X", step_x));
 
     let main = LinearLayout::vertical()
         .child(TextView::new("Your code:").align(Align::center()))
