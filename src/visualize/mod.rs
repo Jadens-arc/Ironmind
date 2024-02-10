@@ -1,7 +1,7 @@
 use cursive::align::Align;
 use cursive::{Cursive, CursiveExt};
-use cursive::view::Nameable;
-use cursive::views::{Button, Dialog, LinearLayout, TextView};
+use cursive::view::{Nameable, Resizable};
+use cursive::views::{Button, Dialog, LinearLayout, ScrollView, TextView};
 use crate::parser::Parser;
 pub fn visualize (parser: Parser) {
     let mut siv = Cursive::default();
@@ -48,7 +48,12 @@ pub fn visualize (parser: Parser) {
 
     let main = LinearLayout::vertical()
         .child(TextView::new("Your code:").align(Align::center()))
-        .child(TextView::new(siv.user_data::<Parser>().unwrap().instructions.clone()).with_name("instructions"))
+        .child(
+            ScrollView::new(
+                TextView::new(siv.user_data::<Parser>().unwrap().instructions.clone())
+                    .with_name("instructions")
+            ).max_height(20)
+        )
         .child(TextView::new("Memory:").align(Align::center()))
         .child(TextView::new("").align(Align::center()).with_name("memory"))
         .child(TextView::new("Standard Output:").align(Align::center()))
