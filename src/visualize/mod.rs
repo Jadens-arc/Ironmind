@@ -15,8 +15,8 @@ fn step(cursive: &mut Cursive) {
         let output = data.get_output().clone();
         let mut memory_string = "|".to_string();
         let mut instructions_string= data.instructions.clone();
-        if instructions_string.get(index.. index+1).unwrap() != "\n" {
-            instructions_string.replace_range(index.. index+1, "▋");
+        if instructions_string.get(index - 1.. index).unwrap() != "\n" {
+            instructions_string.replace_range(index - 1.. index, "▋");
         }
         for cell in &data.machine.tape {
             memory_string.push_str(&format!("{}|", cell));
