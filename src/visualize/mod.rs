@@ -6,19 +6,18 @@ use crate::parser::Parser;
 
 fn step(cursive: &mut Cursive) {
     if let Some(data) = cursive.user_data::<Parser>() {
-        if data.instruction_index + 1 == data.instructions.len() {
+        if data.get_instruction_index() + 1 == data.get_instructions().len() {
             return;
         }
-        let _ = data.match_current_instruction(true);
-        data.instruction_index += 1;
-        let index = data.instruction_index.clone();
-        let output = data.get_output().clone();
+        let _ = data.step();
+        let index = data.get_instruction_index();
+        let output = data.get_output();
         let mut memory_string = "|".to_string();
-        let mut instructions_string= data.instructions.clone();
+        let mut instructions_string= data.get_instructions();
         if instructions_string.get(index - 1.. index).unwrap() != "\n" {
             instructions_string.replace_range(index - 1.. index, "▋");
         }
-        for cell in &data.machine.tape {
+        for cell in &data.get_memory() {
             memory_string.push_str(&format!("{}|", cell));
         }
         cursive.call_on_name("standard_output", |standard_output: &mut TextView| {
@@ -49,7 +48,7 @@ pub fn visualize (parser: Parser) {
         .child(TextView::new("Your code:").align(Align::center()))
         .child(
             ScrollView::new(
-                TextView::new(siv.user_data::<Parser>().unwrap().instructions.clone())
+                TextView::new(siv.user_data::<Parser>().unwrap().get_instructions())
                     .with_name("instructions")
             ).max_height(20)
         )

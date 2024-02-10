@@ -7,9 +7,9 @@
 #[derive(Debug, Clone)]
 pub struct Machine {
     /// The modifiable array of data
-    pub tape: Vec<u8>,
+    tape: Vec<u8>,
     /// the starting location of the pointer
-    pub pointer: usize,
+    pointer: usize,
 }
 
 impl Machine {
@@ -19,6 +19,10 @@ impl Machine {
             tape: Vec::from([0]),
             pointer: 0,
         }
+    }
+
+    pub fn get_memory(&self) -> Vec<u8> {
+        self.tape.clone()
     }
 
     /// Move the pointer right

@@ -8,11 +8,11 @@ use std::{io};
 /// Parses brainfuck instructions to manipulate the turing machine
 #[derive(Debug, Clone)]
 pub struct Parser {
-    pub machine:           Machine,    // The turing machine to operate on
-    pub loops:             Vec<usize>, // Used for handling loops
-    pub instructions:      String,
-    pub instruction_index: usize,      // Current index of input being parsed
-    pub output:            String,     // Collector for bf output
+    machine:           Machine,    // The turing machine to operate on
+    loops:             Vec<usize>, // Used for handling loops
+    instructions:      String,
+    instruction_index: usize,      // Current index of input being parsed
+    output:            String,     // Collector for bf output
 }
 
 impl Parser {
@@ -42,6 +42,10 @@ impl Parser {
         self.output.clone()
     }
 
+    pub fn get_instructions(&self) -> String {
+        self.instructions.clone()
+    }
+
     pub fn get_instruction(&self, index: usize) -> char {
         self.instructions.chars().nth(index).unwrap()
     }
@@ -50,8 +54,21 @@ impl Parser {
         self.get_instruction(self.instruction_index.clone())
     }
 
+    pub fn get_instruction_index(&self) -> usize {
+        self.instruction_index
+    }
+    pub fn get_memory(&self) -> Vec<u8> {
+        self.machine.get_memory()
+    }
+
     pub fn match_current_instruction(&mut self, silent: bool) -> Result<(), String> {
         self.match_instruction(self.get_current_instruction(), silent)
+    }
+
+    pub fn step(&mut self) -> Result<(), String> {
+        self.match_current_instruction(false)?;
+        self.instruction_index += 1;
+        Ok(())
     }
 
     pub fn match_instruction(&mut self, instruction: char, silent: bool) -> Result<(), String> {
