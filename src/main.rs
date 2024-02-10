@@ -28,7 +28,7 @@ fn main() -> Result<(), String> {
         p.parse()?;
         return Ok(());
     } else {
-        visualize::Visualizer::visualize(p);
+        visualize::visualize(p);
     }
     Ok(())
 }
