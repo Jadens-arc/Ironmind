@@ -1,6 +1,6 @@
 [package]
 name = "ironmind"
-version = "0.3.11"
+version = "0.3.12"
 edition = "2021"
 authors = ["Jaden Arceneaux <contact@jadenarceneaux.com>"]
 description = "A Brainf*ck interpreter built in Rust"
