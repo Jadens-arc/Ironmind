@@ -88,7 +88,12 @@ pub fn visualize (parser: Parser) {
         .child(TextView::new("Memory:").align(Align::center()))
         .child(TextView::new("").align(Align::center()).with_name("memory"))
         .child(TextView::new("Standard Output:").align(Align::center()))
-        .child(TextView::new("").align(Align::center()).with_name("standard_output"))
+        .child(
+            ScrollView::new(
+                TextView::new("").align(Align::center())
+                    .with_name("standard_output")
+            )
+        )
         .child(buttons);
     siv.add_layer(Dialog::around(LinearLayout::horizontal().child(main)));
     siv.run()
