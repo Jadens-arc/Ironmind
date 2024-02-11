@@ -58,10 +58,21 @@ impl Machine {
     pub fn get(&self) -> u8 { self.tape[self.pointer] }
 
     /// Return the value of the current cell as a char
-    pub fn get_char(&self) -> char { self.get() as char }
+    pub fn get_char(&self) -> Option<char> {
+        if let Some(char) = char::from_u32(self.get() as u32) {
+            if char != '\0' {
+                return Some(char);
+            }
+        }
+        None
+    }
 
     /// Print the ascii value of the current cell
-    pub fn output(&self) { print!("{}", self.get_char()) }
+    pub fn output(&self) {
+        if let Some(char) = self.get_char() {
+            print!("{}", char);
+        }
+    }
 
     /// Set the value of the current cell
     pub fn set(&mut self, value: u8) {

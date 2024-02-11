@@ -78,7 +78,9 @@ impl Parser {
             '+' => self.machine.increment(),
             '-' => self.machine.decrement(),
             '.' => {
-                self.output.push(self.machine.get_char());
+                if let Some(char) = self.machine.get_char() {
+                    self.output.push(char);
+                }
                 if !silent {
                     self.machine.output();
                 }
