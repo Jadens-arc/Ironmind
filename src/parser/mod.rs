@@ -66,7 +66,7 @@ impl Parser {
     }
 
     pub fn step(&mut self) -> Result<(), String> {
-        self.match_current_instruction(false)?;
+        self.match_current_instruction(true)?;
         self.instruction_index += 1;
         Ok(())
     }
