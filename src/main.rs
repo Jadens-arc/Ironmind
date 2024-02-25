@@ -25,10 +25,14 @@ fn main() -> Result<(), String> {
 
     if !args.visual_mode {
         // just parse code and display output
-        p.parse()?;
+        while p.running() {
+            if let Ok(_) = p.match_current_instruction(false) {
+                p.increment_instruction_index();
+            }
+        }
         return Ok(());
-    } else {
-        visualize::visualize(p);
-    }
+    } 
+
+    visualize::visualize(p);
     Ok(())
 }

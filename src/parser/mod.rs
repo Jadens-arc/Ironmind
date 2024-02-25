@@ -1,9 +1,14 @@
 use crate::Machine;
 use std::fs::File;
-use std::io::{Read, Write};
-use std::{io};
+use std::io::Read;
 
 // TODO custom error enum
+
+#[derive(PartialEq, Eq)]
+pub enum ParserExit {
+    None,
+    InputNeeded,
+}
 
 /// Parses brainfuck instructions to manipulate the turing machine
 #[derive(Debug, Clone)]
@@ -26,18 +31,6 @@ impl Parser {
         }
     }
 
-    /// Prompt user to input a char and set the value of the current to the ascii code representation of the char
-    pub fn get_input(&mut self) -> Result<(), std::io::Error>{
-        print!("> ");
-        io::stdout().flush()?;
-        let mut input: String = String::new();
-        io::stdin().read_line(&mut input)?;
-        if let Some(value) = input.chars().collect::<Vec<char>>().first() {
-            self.machine.set(*value as u8);
-        }
-        Ok(())
-    }
-
     pub fn get_output(&self) -> String {
         self.output.clone()
     }
@@ -57,21 +50,24 @@ impl Parser {
     pub fn get_instruction_index(&self) -> usize {
         self.instruction_index
     }
+
     pub fn get_memory(&self) -> Vec<u8> {
         self.machine.get_memory()
     }
 
-    pub fn match_current_instruction(&mut self, silent: bool) -> Result<(), String> {
+    pub fn increment_instruction_index(&mut self) {
+        self.instruction_index += 1;
+    }
+
+    pub fn running(&self) -> bool {
+        self.instruction_index < self.instructions.len()
+    }
+
+    pub fn match_current_instruction(&mut self, silent: bool) -> Result<ParserExit, String> {
         self.match_instruction(self.get_current_instruction(), silent)
     }
 
-    pub fn step(&mut self) -> Result<(), String> {
-        self.match_current_instruction(true)?;
-        self.instruction_index += 1;
-        Ok(())
-    }
-
-    pub fn match_instruction(&mut self, instruction: char, silent: bool) -> Result<(), String> {
+    pub fn match_instruction(&mut self, instruction: char, silent: bool) -> Result<ParserExit, String> {
         match instruction {
             '>' => self.machine.move_right(),
             '<' => self.machine.move_left(),
@@ -86,9 +82,7 @@ impl Parser {
                 }
             },
             ',' => {
-                if let Err(_) = self.get_input() {
-                    return Err(String::from("Input could not be parsed"));
-                }
+                return Ok(ParserExit::InputNeeded);
             },
             '[' => self.loops.push(self.instruction_index),
             ']' => {
@@ -102,7 +96,11 @@ impl Parser {
             },
             _ => (),
         }
-        Ok(())
+        Ok(ParserExit::None)
+    }
+
+    pub fn set_current_cell(&mut self, value: u8) {
+        self.machine.set(value)
     }
 
     #[allow(dead_code)]
@@ -119,26 +117,5 @@ impl Parser {
             return Err(String::from("Could not read file"))
         }
         Ok(())
-    }
-
-    /// Parse a string of brainfuck instructions
-    ///
-    /// Operates on Turing Machine
-    pub fn parse(&mut self) -> Result<String, String> {
-        while self.instruction_index < self.instructions.len() {
-            self.match_current_instruction(false)?;
-            self.instruction_index += 1;
-        }
-        Ok(self.output.clone())
-    }
-}
-
-impl Iterator for Parser {
-    type Item = Machine;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.match_current_instruction(true).unwrap();
-        self.instruction_index += 1;
-        Some(self.machine.clone())
     }
 }
