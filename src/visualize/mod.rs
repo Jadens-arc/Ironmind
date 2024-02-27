@@ -4,6 +4,32 @@ use cursive::view::{Nameable, Resizable};
 use cursive::views::{Button, Dialog, EditView, LinearLayout, ScrollView, TextView};
 use crate::parser::{Parser, ParserExit};
 
+/// Update stdout, memory, and instructions on cursive display
+fn update_display(cursive: &mut Cursive) {
+    let data = cursive.user_data::<Parser>().unwrap();
+
+    let index = data.get_instruction_index();
+    let output = data.get_output();
+    let mut memory_string = "|".to_string();
+    let mut instructions_string= data.get_instructions();
+    if instructions_string.get(index - 1.. index).unwrap() != "\n" {
+        instructions_string.replace_range(index - 1.. index, "▋");
+    }
+    for cell in &data.get_memory() {
+        memory_string.push_str(&format!("{}|", cell));
+    }
+    cursive.call_on_name("standard_output", |standard_output: &mut TextView| {
+            standard_output.set_content(output);
+    });
+    cursive.call_on_name("memory", |memory: &mut TextView| {
+        memory.set_content(memory_string);
+    });
+    cursive.call_on_name("instructions", |instructions: &mut TextView| {
+        instructions.set_content(instructions_string);
+    });
+}
+
+/// Prompt user to input character and set current cell to the value of that character
 fn get_input(cursive: &mut Cursive) {
     cursive.add_layer(
         Dialog::around(
@@ -14,6 +40,7 @@ fn get_input(cursive: &mut Cursive) {
                     if let Some(data) = cursive.user_data::<Parser>() {
                         data.set_current_cell(char.chars().nth(0).unwrap() as u8);
                     }
+                    update_display(cursive);
                 }))
         )
     );
@@ -40,27 +67,7 @@ fn step(cursive: &mut Cursive) {
         get_input(cursive);
     }
 
-    let data = cursive.user_data::<Parser>().unwrap();
-
-    let index = data.get_instruction_index();
-    let output = data.get_output();
-    let mut memory_string = "|".to_string();
-    let mut instructions_string= data.get_instructions();
-    if instructions_string.get(index - 1.. index).unwrap() != "\n" {
-        instructions_string.replace_range(index - 1.. index, "▋");
-    }
-    for cell in &data.get_memory() {
-        memory_string.push_str(&format!("{}|", cell));
-    }
-    cursive.call_on_name("standard_output", |standard_output: &mut TextView| {
-            standard_output.set_content(output);
-    });
-    cursive.call_on_name("memory", |memory: &mut TextView| {
-        memory.set_content(memory_string);
-    });
-    cursive.call_on_name("instructions", |instructions: &mut TextView| {
-        instructions.set_content(instructions_string);
-    });
+    update_display(cursive);
 }
 
 fn handle_count_submit(cursive: &mut Cursive, count: &str) {

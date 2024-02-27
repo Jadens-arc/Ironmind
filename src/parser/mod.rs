@@ -2,8 +2,6 @@ use crate::Machine;
 use std::fs::File;
 use std::io::Read;
 
-// TODO custom error enum
-
 #[derive(PartialEq, Eq)]
 pub enum ParserExit {
     None,
@@ -45,6 +43,10 @@ impl Parser {
 
     pub fn get_current_instruction(&self) -> char {
         self.get_instruction(self.instruction_index.clone())
+    }
+
+    pub fn set_current_cell(&mut self, value: u8) {
+        self.machine.set(value)
     }
 
     pub fn get_instruction_index(&self) -> usize {
@@ -97,10 +99,6 @@ impl Parser {
             _ => (),
         }
         Ok(ParserExit::None)
-    }
-
-    pub fn set_current_cell(&mut self, value: u8) {
-        self.machine.set(value)
     }
 
     #[allow(dead_code)]
