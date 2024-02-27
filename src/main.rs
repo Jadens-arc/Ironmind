@@ -25,29 +25,29 @@ fn main() -> Result<(), String> {
     let mut p: Parser = Parser::new();
     p.load_file(args.filepath)?;
 
-    if !args.visual_mode {
-        // just parse code and display output
-        while p.running() {
-            if let Ok(value) = p.match_current_instruction(false) {
-                p.increment_instruction_index();
-                if value == ParserExit::InputNeeded {
-                    print!("> ");
-                    if let Err(_) = io::stdout().flush() {
-                        return Err("Could not flush stdout".to_string());
-                    }
-                    let mut input: String = String::new();
-                    if let Err(_) = io::stdin().read_line(&mut input) {
-                        return Err("Could not flush read input".to_string());
-                    }
-                    if let Some(value) = input.chars().collect::<Vec<char>>().first() {
-                        p.set_current_cell(*value as u8)
-                    }
-                }
-            }
-        }
+    if args.visual_mode {
+        visualize::visualize(p);
         return Ok(());
     } 
 
-    visualize::visualize(p);
+    // just parse code and display output
+    while p.running() {
+        if let Ok(value) = p.match_current_instruction(false) {
+            p.increment_instruction_index();
+            if value == ParserExit::InputNeeded {
+                print!("> ");
+                if let Err(_) = io::stdout().flush() {
+                    return Err("Could not flush stdout".to_string());
+                }
+                let mut input: String = String::new();
+                if let Err(_) = io::stdin().read_line(&mut input) {
+                    return Err("Could not flush read input".to_string());
+                }
+                if let Some(value) = input.chars().collect::<Vec<char>>().first() {
+                    p.set_current_cell(*value as u8)
+                }
+            }
+        }
+    }
     Ok(())
 }
