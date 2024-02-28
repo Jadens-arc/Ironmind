@@ -38,7 +38,11 @@ fn get_input(cursive: &mut Cursive) {
                 .child(EditView::new().on_submit(|cursive, char| {
                     cursive.pop_layer();
                     if let Some(data) = cursive.user_data::<Parser>() {
-                        data.set_current_cell(char.chars().nth(0).unwrap() as u8);
+                        if let Some(user_char) = char.chars().nth(0) {
+                            data.set_current_cell(user_char as u8);
+                        } else {
+                            get_input(cursive);
+                        }
                     }
                     update_display(cursive);
                 }))
