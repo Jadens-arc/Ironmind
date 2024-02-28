@@ -21,26 +21,28 @@ pub mod tests {
             >++++[>++++++++<-]>+.               (exclamation)
             >+++[>+++<-]>+.                     (new line)
             "));
-        match p.parse() {
-            Ok(output) => {
-                if output == "Hello, World!\n" {
-                    return Ok(());
-                }
-                return Err(format!("Output '{output}' invalid"));
+        while p.running() {
+            if let Err(err) = p.match_current_instruction(true) {
+                return Err(err);
             }
-            Err(err) => Err(err)
+            p.increment_instruction_index();
         }
+        if p.get_output() != "Hello, World!\n".to_string() {
+            return Err(format!("Output '{}' invalid", p.get_output()));
+        }
+        Ok(())
     }
 
     #[test]
     pub fn bottles_of_beer() -> Result<(), String> {
         let mut p: Parser = Parser::new();
         p.load_file("src/tests/99_bottles_of_beer.bf".to_string())?;
-        let result = p.parse();
-        if let Err(e) = result {
-            return Err(e);
+        while p.running() {
+            if let Err(err) = p.match_current_instruction(true) {
+                return Err(err);
+            }
+            p.increment_instruction_index();
         }
-        let output = result.unwrap();
         let mut file: File = if let Ok(file) = File::open("src/tests/expected_output.txt") { file } else {
             return Err(String::from("Could not open file"));
         };
@@ -48,8 +50,8 @@ pub mod tests {
         if let Err(_) = file.read_to_string(&mut contents) {
             return Err(String::from("Could not read file"));
         }
-        if output != contents {
-            return Err(format!("Output '{output}' invalid"))
+        if p.get_output() != contents {
+            return Err(format!("Output '{}' invalid", p.get_output()))
         }
         Ok(())
     }
