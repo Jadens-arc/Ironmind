@@ -11,15 +11,15 @@ A BrainF*ck interpreter and code execution visualizer written in Rust
 
 ## Installation Instructions
 ### Cargo
-Run `cargo install ironmind` to install the application from [crates.io](https://crates.io/).
+`cargo install ironmind`
 
 ### Homebrew
-Run `brew tap jadens-arc/tap` to load the tap (repository)
+First `brew tap jadens-arc/tap`
 
-Then run `brew install ironmind` to install the formula (application) from [homebrew](https://brew.sh/).
+Then `brew install ironmind`
 
 ### Snapcraft
-Run `snap install ironmind`
+`snap install ironmind`
 
 
 ## Usage
