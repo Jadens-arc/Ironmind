@@ -18,6 +18,10 @@ Run `brew tap jadens-arc/tap` to load the tap (repository)
 
 Then run `brew install ironmind` to install the formula (application) from [homebrew](https://brew.sh/).
 
+### Snapcraft
+Run `snap install ironmind`
+
+
 ## Usage
 Sample program:
 ```brainfuck
