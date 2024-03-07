@@ -13,6 +13,11 @@ A BrainF*ck interpreter and code execution visualizer written in Rust
 ### Cargo
 Run `cargo install ironmind` to install the application from [crates.io](https://crates.io/).
 
+### Homebrew
+Run `brew tap jadens-arc/tap` to load the tap (repository)
+
+Then run `brew install ironmind` to install the formula (application) from [homebrew](https://brew.sh/).
+
 ## Usage
 Sample program:
 ```brainfuck
