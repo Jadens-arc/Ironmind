@@ -4,8 +4,7 @@ A BrainF*ck interpreter and code execution visualizer written in Rust
 [![Crates.io](https://img.shields.io/crates/l/ironmind)](https://opensource.org/licenses/MIT)
 [![Crates.io](https://img.shields.io/crates/d/ironmind)](https://crates.io/crates/ironmind)
 [![Crates.io](https://img.shields.io/github/actions/workflow/status/jadens-arc/Ironmind/rust.yml)](https://github.com/Jadens-Arc/Ironmind)
-
-
+[![ironmind](https://snapcraft.io/ironmind/badge.svg)](https://snapcraft.io/ironmind)
 
 [What is BrainF*ck](https://www.youtube.com/watch?v=hdHjjBS4cs8)
 
