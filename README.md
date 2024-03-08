@@ -1,4 +1,8 @@
 # The Iron Mind Interpreter
+
+![ironmind](doc/big-brain.png)
+
+
 A BrainF*ck interpreter and code execution visualizer written in Rust
 
 [![Crates.io](https://img.shields.io/crates/l/ironmind)](https://opensource.org/licenses/MIT)
