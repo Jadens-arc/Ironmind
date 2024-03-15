@@ -30,18 +30,19 @@ fn update_display(cursive: &mut Cursive) {
 }
 
 /// Prompt user to input character and set current cell to the value of that character
-fn get_input(cursive: &mut Cursive) {
+fn get_input(cursive: &mut Cursive, remaining: i32) {
     cursive.add_layer(
         Dialog::around(
             LinearLayout::vertical()
                 .child(TextView::new("What character do you want to input?"))
-                .child(EditView::new().on_submit(|cursive, char| {
+                .child(EditView::new().on_submit(move |cursive, char| {
                     cursive.pop_layer();
                     if let Some(data) = cursive.user_data::<Parser>() {
                         if let Some(user_char) = char.chars().nth(0) {
                             data.set_current_cell(user_char as u8);
+                            step(cursive, 0, remaining.clone());
                         } else {
-                            get_input(cursive);
+                            get_input(cursive, remaining);
                         }
                     }
                     update_display(cursive);
@@ -51,7 +52,10 @@ fn get_input(cursive: &mut Cursive) {
 }
 
 /// Iterate program to next instruction and update TUI
-fn step(cursive: &mut Cursive) {
+fn step(cursive: &mut Cursive, cur: i32, target: i32) {
+    if cur == target {
+        return;
+    }
     let mut exit_type = ParserExit::None;
 
     match cursive.user_data::<Parser>() {
@@ -67,19 +71,19 @@ fn step(cursive: &mut Cursive) {
         None => { return; }
     };
 
+    update_display(cursive);
     if exit_type == ParserExit::InputNeeded {
-        get_input(cursive);
+       get_input(cursive, target - cur);
+    } else {
+        step(cursive, cur + 1, target)
     }
 
-    update_display(cursive);
 }
 
 fn handle_count_submit(cursive: &mut Cursive, count: &str) {
     cursive.pop_layer();
     if let Ok(count) = String::from(count).parse::<i32>() {
-        for _ in 0.. count {
-            step(cursive);
-        }
+        step(cursive, 0, count);
         return;
     }
     cursive.add_layer(
@@ -115,7 +119,9 @@ pub fn visualize (parser: Parser) {
                 cursive.quit();
             }
         ))
-        .child(Button::new("Step One", step))
+        .child(Button::new("Step One", |cursive|  {
+            step(cursive, 0, 1);
+        }))
         .child(Button::new("Step X", step_x));
 
     let main = LinearLayout::vertical()
