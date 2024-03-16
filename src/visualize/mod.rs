@@ -73,7 +73,7 @@ fn step(cursive: &mut Cursive, cur: i32, target: i32) {
 
     update_display(cursive);
     if exit_type == ParserExit::InputNeeded {
-       get_input(cursive, target - cur);
+        get_input(cursive, target - cur);
     } else {
         step(cursive, cur + 1, target)
     }
